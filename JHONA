@@ -1,0 +1,246 @@
+package sistemas.uns.listasdelab04;
+
+import java.util.Scanner;
+
+public class ListasDELAB04 {
+
+    public static void main(String[] args) {
+
+        Scanner entrada = new Scanner(System.in);
+        int primero = 3, fin = 12, dispo = 2;
+        int[] num = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        int[] sig = {-1, 12, 4, 6, 5, 7, 10, 8, 9, 11, 1, 0, -1};
+        int[] ant = {0, 10, 0, -1, 0, 0, 3, 0, 0, 0, 6, 0, 1};
+        String [] menu = {"Recorrido SIGUIENTE","Recorrido ANTERIOR", "INSERCION", "BUSQUEDA", "ELIMINACION", "SALIR"};
+        String[] dato = {" ", "L", " ", "B", " ", " ", "E", " ", " ", " ", "H", " ", "P"};
+        int star_sig = 3, star_ant = 12;
+        boolean salir = false;
+
+        while (salir != true) {
+            System.out.printf("%nMENU%n [1]%s%n [2]%s%n [3]%s%n [4]%s%n [5]%s%n [5]%s%n >>" , 
+                    menu [0],menu [1],menu [2],menu [3],menu [4],menu [5]);
+            int opc = entrada.nextInt();
+
+            switch (opc) {
+                case 1: {
+                    System.out.print("Recorrido SIGUIENTE: ");
+                    while (star_sig != -1) {
+                        System.out.print(" " + dato[star_sig] + " ");
+                        star_sig = sig[star_sig];
+                    }
+                    break;
+                }
+                case 2: {
+                    System.out.print("Recorrido ANTERIOR: ");
+                    while (star_ant != -1) {
+                        System.out.print(" " + dato[star_ant] + " ");
+                        star_ant = ant[star_ant];
+                    }
+                    break;
+                }
+                case 3: {
+                    star_sig = primero;
+                    star_ant = fin;
+                    System.out.println("   |DATO|SIG|ANT");
+                    for (int i = 0; i <= 12; i++) {
+                        if (i < 10) {
+                            System.out.print(" " + i + " | " + dato[i] + " | " + sig[i] + " | " + ant[i] + "\n");
+                        } else {
+                            System.out.print(i + " | " + dato[i] + " | " + sig[i] + " | " + ant[i] + "\n");
+                        }
+                    }
+                    System.out.print("Recorrido SIGUIENTE: ");
+                    while (star_sig != -1) {
+                        System.out.print(" " + dato[star_sig] + " ");
+                        star_sig = sig[star_sig];
+                    }
+                    System.out.print("\nRecorrido ANTERIOR: ");
+                    while (star_ant != -1) {
+                        System.out.print(" " + dato[star_ant] + " ");
+                        star_ant = ant[star_ant];
+                    }
+                    System.out.print("\n VALOR: ");
+                    String valor = entrada.next();
+                    System.out.print(" LUGAR: ");
+                    int lugar = entrada.nextInt();
+                    if (dispo == -1) {
+                        System.out.println("Lista Llena");
+                    } else {
+                        int nuevo = dispo;
+                        dispo = sig[dispo];
+                        dato[nuevo] = valor;
+                        if (primero == fin && dato[primero].equals("")) {
+                            sig[nuevo] = sig[lugar];
+                            ant[nuevo] = ant[lugar];
+                        } else {
+                            if (primero == fin || sig[lugar] == -1) {
+                                int auxsig = sig[lugar];
+                                sig[lugar] = nuevo;
+                                sig[nuevo] = auxsig;
+                                ant[nuevo] = lugar;
+                                fin = nuevo;
+                            } else {
+                                if (dato[lugar].compareTo(valor) > 0) {
+                                    int auxsig = sig[lugar];
+                                    int auxant = ant[sig[lugar]];
+                                    sig[nuevo] = auxant;
+                                    ant[nuevo] = ant[lugar];
+                                    sig[lugar] = auxsig;
+                                    ant[lugar] = nuevo;
+                                    ant[sig[lugar]] = lugar;
+                                    primero = nuevo;
+                                } else {
+                                    int auxsig = sig[lugar];
+                                    int auxant = ant[sig[lugar]];
+                                    ant[sig[lugar]] = nuevo;
+                                    sig[lugar] = nuevo;
+                                    sig[nuevo] = auxsig;
+                                    ant[nuevo] = auxant;
+                                }
+                            }
+                        }
+                    }
+                    star_sig = num[primero];
+                    star_ant = num[fin];
+                    System.out.println("   |DATO|SIG|ANT");
+                    for (int i = 0; i <= 12; i++) {
+                        if (i < 10) {
+                            System.out.print(" " + i + " | " + dato[i] + " | " + sig[i] + " | " + ant[i] + "\n");
+                        } else {
+                            System.out.print(i + " | " + dato[i] + " | " + sig[i] + " | " + ant[i] + "\n");
+                        }
+                    }
+                    System.out.println("INICIO: " + primero + " | FIN: " + fin + "DISPO: " + dispo);
+                    System.out.print("Recorrido SIGUIENTE: ");
+                    while (star_sig != -1) {
+                        System.out.print(" " + dato[star_sig] + " ");
+                        star_sig = sig[star_sig];
+                    }
+                    System.out.print("\nRecorrido ANTERIOR: ");
+                    while (star_ant != -1) {
+                        System.out.print(" " + dato[star_ant] + " ");
+                        star_ant = ant[star_ant];
+                    }
+                    break;
+                }
+                case 4: {
+                    star_sig = primero;
+                    star_ant = fin;
+                    System.out.print("\n[1]BUSQUEDA SIGUIENTE\n[2]BUSQUEDA ANTERIOR\n   >>> ");
+                    int opc_bus = entrada.nextInt();
+                    System.out.println("   |DATO|SIG|ANT");
+                    for (int i = 0; i <= 12; i++) {
+                        if (i < 10) {
+                            System.out.print(" " + i + " | " + dato[i] + " | " + sig[i] + " | " + ant[i] + "\n");
+                        } else {
+                            System.out.print(i + " | " + dato[i] + " | " + sig[i] + " | " + ant[i] + "\n");
+                        }
+                    }
+                    System.out.print("INGRESE EL VALOR: ");
+                    String valor = entrada.next();
+                    int indice = star_sig;
+                    int lugar = 0;
+                    if (opc_bus == 2) {
+                        indice = star_ant;
+                    }
+                    while (indice != -1) {
+                        if (dato[indice].equals(valor)) {
+                            lugar = indice;
+                            break;
+                        } else if (opc_bus == 1) {
+                            indice = sig[indice];
+                        } else {
+                            indice = ant[indice];
+                        }
+                    }
+                    System.out.println("  DATO '" + valor + "' | POSICION: '" + lugar + "'");
+                    star_sig = primero;
+                    star_ant = fin;
+                    break;
+                }
+                case 5: {
+                    for (int i = 0; i <= 12; i++) {
+                        if (i < 10) {
+                            System.out.print(" " + i + " | " + dato[i] + " | " + sig[i] + " | " + ant[i] + "\n");
+                        } else {
+                            System.out.print(i + " | " + dato[i] + " | " + sig[i] + " | " + ant[i] + "\n");
+                        }
+                    }
+                    System.out.print("\n VALOR: ");
+                    String valor = entrada.next();
+
+                    // Metodo de busqueda para obtener el lugar 
+                    int Indice = primero, lugar = 0;
+                    while (Indice != -1) {
+                        if (dato[Indice].equals(valor)) {
+                            lugar = Indice;
+                            break;
+                        } else {
+                            Indice = sig[Indice];
+                        }
+                    }
+                    System.out.println(lugar);
+                    if (dato[lugar].equals(" ")) {
+                        System.out.println("LISTA VACÍA");
+                    } else if (dispo == -1) {
+                        System.out.println("Lista vacía");
+                    } else {
+                        if (lugar == primero && lugar != fin) { //PRIMERO
+                            int auxsig = sig[lugar];
+                            dato[lugar] = "";
+                            ant[sig[lugar]] = ant[lugar];
+                            ant[lugar] = 0;
+                            sig[lugar] = sig[dispo];
+                            sig[dispo] = lugar;
+                            primero = auxsig;
+                        } else if (lugar == fin && lugar != primero) { //ÚLTIMO
+                            dato[lugar] = "";
+                            int auxsig = sig[ant[lugar]];
+                            sig[ant[lugar]] = sig[lugar];
+                            sig[lugar] = sig[dispo];
+                            sig[dispo] = auxsig;
+                            fin = ant[lugar];
+                            ant[lugar] = 0;
+                        } else if (lugar != primero && lugar != fin) {
+                            dato[lugar] = "";
+                            int auxsig = sig[lugar];
+                            int auxdispo = sig[dispo];
+                            int auxant = ant[lugar];
+
+                            ant[sig[lugar]] = auxant;
+                            sig[ant[lugar]] = auxsig;
+                            sig[lugar] = auxdispo;
+                            sig[dispo] = lugar;
+                            ant[lugar] = 0;
+                        } else if (primero == fin) {
+                            dato[lugar] = "";
+                            sig[lugar] = sig[dispo];
+                            sig[dispo] = lugar;
+                            ant[lugar] = 0;
+                        }
+                    }
+                    if (!dato[lugar].equals(" ")) {
+                        for (int i = 0; i <= 12; i++) {
+                            System.out.println("   |DATO|SIG|ANT");
+                            if (i < 10) {
+                                System.out.print(" " + i + " | " + dato[i] + " | " + sig[i] + " | " + ant[i] + "\n");
+                            } else {
+                                System.out.print(i + " | " + dato[i] + " | " + sig[i] + " | " + ant[i] + "\n");
+                            }
+                        }
+                        System.out.println("INICIO: " + primero + " | FIN: " + fin + "DISPO: " + dispo);
+                    }
+                    star_sig = primero;
+                    star_ant = fin;
+                    break;
+                }
+                case 6: {
+                    System.out.println("ADIOS!!!");
+                    salir = true;
+                }
+                break;
+            }
+        }
+    }
+
+}
